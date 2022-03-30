@@ -25,15 +25,15 @@ You can assume that once a given user starts a song, they listen to it in its en
 -- in the outer query, calculate the average of the total daily times per user in seconds and convert to hours
 
 select 
-	user_id,
-    round(avg(total_song_length_sec)/3600, 2) as avg_daily_listening_hrs
+ user_id,
+ round(avg(total_song_length_sec)/3600, 2) as avg_daily_listening_hrs
 from (
-	select
-		user_id,
-		date(from_unixtime(timestamp)) as listening_date,
-        sum(song_length) as total_song_length_sec
-	from user_song_log u
-    left join song_info s on u.song_id = s.song_id
-    group by user_id, listening_date
+ select
+  user_id,
+  date(from_unixtime(timestamp)) as listening_date,
+  sum(song_length) as total_song_length_sec
+ from user_song_log u
+ left join song_info s on u.song_id = s.song_id
+ group by user_id, listening_date
 ) as user_daily_totals
 group by user_id;
